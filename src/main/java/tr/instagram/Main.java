@@ -13,7 +13,7 @@ public class Main{
         System.out.println("Please enter your password : ");
         String password = scanner.nextLine();
         System.out.println("Please enter target profile name : ");
-        String targetProfileName = scanner.nextLine();  //"yazilimbilimi_official"
+        String targetProfileName = scanner.nextLine();
 
         App app = new App();
         app.loginWith(username , password);

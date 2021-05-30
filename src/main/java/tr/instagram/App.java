@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -24,18 +25,19 @@ public class App {
     By likeButtonLocator = new By.ByCssSelector("span.fr66n");
 
     public App(){
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("start-maximized");
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
         driver.get(BASE_URL);
     }
 
     public void loginWith(String username , String password){
-        WebDriverWait wait = new WebDriverWait(driver , 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameLocator));
+        waitFor(usernameLocator);
         driver.findElement(usernameLocator).sendKeys(username);
         driver.findElement(passwordLocator).sendKeys(password);
         driver.findElement(loginButtonLocator).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(instagramLogoLocator)) ;
+        waitFor(instagramLogoLocator);
     }
 
     public void navigateToTargetProfile(String profileName){
@@ -53,11 +55,15 @@ public class App {
 
     public void likePosts(int count){
         while (count > 0){
-            WebDriverWait wait = new WebDriverWait(driver , 3);
-            wait.until(ExpectedConditions.visibilityOfElementLocated(likeButtonLocator)).click();
+            waitFor(likeButtonLocator);
             driver.findElement(htmlTag).sendKeys(Keys.ARROW_RIGHT);
             count -- ;
         }
+    }
+
+    private void waitFor(By locator){
+        WebDriverWait wait = new WebDriverWait(driver , 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
 
